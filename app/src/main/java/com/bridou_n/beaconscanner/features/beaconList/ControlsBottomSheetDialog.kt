@@ -132,7 +132,7 @@ class ControlsBottomSheetDialog : RoundedBsDialog() {
         }
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         queries.clear()
         super.onDismiss(dialog)
     }

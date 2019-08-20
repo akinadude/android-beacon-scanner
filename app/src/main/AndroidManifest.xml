@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
 
+        <!--android:launchMode="singleInstance"-->
         <activity
             android:name=".features.settings.SettingsActivity"
             />

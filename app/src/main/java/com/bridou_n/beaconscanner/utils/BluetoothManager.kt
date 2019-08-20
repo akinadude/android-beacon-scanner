@@ -13,13 +13,13 @@ import javax.inject.Inject
 class BluetoothManager @Inject constructor(private val adapter: BluetoothAdapter?, context: Context) {
 
     private val subject: BehaviorProcessor<BeaconListActivity.BluetoothState> =
-            BehaviorProcessor.createDefault<BeaconListActivity.BluetoothState>(getStaeFromAdapterState(adapter?.state ?: BluetoothAdapter.STATE_OFF))
+            BehaviorProcessor.createDefault(getStateFromAdapterState(adapter?.state ?: BluetoothAdapter.STATE_OFF))
 
     init {
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(ctx: Context, intent: Intent) {
                 if (BluetoothAdapter.ACTION_STATE_CHANGED == intent.action) {
-                    val state = getStaeFromAdapterState(intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR))
+                    val state = getStateFromAdapterState(intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR))
 
                     subject.onNext(state)
                 }
@@ -28,7 +28,7 @@ class BluetoothManager @Inject constructor(private val adapter: BluetoothAdapter
         context.registerReceiver(receiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))
     }
 
-    fun getStaeFromAdapterState(state: Int) : BeaconListActivity.BluetoothState {
+    fun getStateFromAdapterState(state: Int) : BeaconListActivity.BluetoothState {
         return when (state) {
             BluetoothAdapter.STATE_OFF -> BeaconListActivity.BluetoothState.STATE_OFF
             BluetoothAdapter.STATE_TURNING_OFF -> BeaconListActivity.BluetoothState.STATE_TURNING_OFF

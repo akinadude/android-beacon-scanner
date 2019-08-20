@@ -5,9 +5,7 @@ import androidx.room.RoomDatabase
 import com.bridou_n.beaconscanner.models.BeaconSaved
 
 @Database(
-        entities = [
-            BeaconSaved::class
-        ],
+        entities = [BeaconSaved::class],
         version = 1,
         exportSchema = false
 )

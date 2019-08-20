@@ -18,26 +18,26 @@ android {
         multiDexEnabled true
     }
 
-    signingConfigs {
+    /*signingConfigs {
         release {
             keyAlias 'BeaconScannerKey'
             keyPassword beacon_scanner_key_password
             storeFile file(beacon_scanner_store_file)
             storePassword beacon_scanner_store_password
         }
-    }
+    }*/
 
     buildTypes {
-        release {
+        /*release {
             minifyEnabled true
             resValue "string", "app_name", "Beacon Scanner"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-        }
+        }*/
 
         debug {
-            minifyEnabled true
-            applicationIdSuffix = ".debug"
+            minifyEnabled false /*true*/
+            //applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             resValue "string", "app_name", "Beacon Scanner"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -52,13 +52,13 @@ ext {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation 'com.google.android.material:material:1.1.0-alpha01'
+    implementation 'com.google.android.material:material:1.1.0-alpha09'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

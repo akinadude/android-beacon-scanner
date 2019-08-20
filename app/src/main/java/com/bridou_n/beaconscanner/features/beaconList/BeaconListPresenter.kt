@@ -18,6 +18,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconManager
+import org.altbeacon.beacon.MonitorNotifier
 import org.altbeacon.beacon.Region
 import timber.log.Timber
 import java.util.*
@@ -81,6 +82,35 @@ class BeaconListPresenter(val view: BeaconListContract.View,
         }
     }
 
+    //todo BootstrapNotifier. What is that?
+    //todo RangeNotifier
+    // MonitorNotifier
+    // BackgroundPowerSaver
+
+    //todo JobScheduler is used internally.
+
+    //todo need to grasp the idea how scanning and finding a beacon is performed.
+
+    //todo background service and foreground service.
+    //todo is there ability to have constantly working service with small power consumption?
+    //todo what is the best for scheduled work — work manager of service?
+
+    //todo try example code with BootstrapNotifier.
+
+    //==========================================================
+
+    //todo read docs https://altbeacon.github.io/android-beacon-library/documentation.html
+    // good to know if an app can be started by `some entity` when it is dropped from memory.
+
+    //todo wake the app when it is dropped from memory.
+    // It must be some system service that sends global event that app can catch and react.
+
+    //todo watch on service in ooma app that works with location update, change wi-fi, and activity recognition.
+
+    //================================
+
+    //todo is there any broadcast receiver event that triggers when a beacon is detected through bluetooth connection.
+
     override fun toggleScan() {
         if (!isScanning()) {
             tracker.logEvent("start_scanning_clicked", null)
@@ -112,14 +142,31 @@ class BeaconListPresenter(val view: BeaconListContract.View,
         isScanning = true
     }
 
+    //todo Does it use a service (android app component) inside?
     override fun onBeaconServiceConnect() {
         Timber.d("beaconManager is bound, ready to start scanning")
-        beaconManager?.addRangeNotifier { beacons, region ->
+        beaconManager?.addRangeNotifier { beacons, region -> //todo what is this callback?
             if (isScanning) {
                 storeBeaconsAround(beacons)
                 logToWebhookIfNeeded()
             }
         }
+
+        //because of unregister second Monitor notifier issue
+        //https://altbeacon.github.io/android-beacon-library/javadoc/org/altbeacon/beacon/startup/RegionBootstrap.html
+        /*beaconManager?.addMonitorNotifier(object: MonitorNotifier {
+            override fun didDetermineStateForRegion(state: Int, region: Region?) {
+                Timber.d("didDetermineStateForRegion, state: $state, region: $region")
+            }
+
+            override fun didEnterRegion(region: Region?) {
+                Timber.d("didEnterRegion, region: $region")
+            }
+
+            override fun didExitRegion(region: Region?) {
+                Timber.d("didExitRegion, region: $region")
+            }
+        })*/
 
         try {
             beaconManager?.startRangingBeaconsInRegion(Region("com.bridou_n.beaconscanner", null, null, null))
